@@ -24,22 +24,21 @@ static void
 task1(void *args __attribute((unused))) {
 
 	for (;;) {
-		gpio_toggle(GPIOC,GPIO13);
-		vTaskDelay(pdMS_TO_TICKS(500));
+		gpio_toggle(GPIOE,GPIO0);
+		vTaskDelay(pdMS_TO_TICKS(200));
 	}
 }
 
 int
 main(void) {
 
-	rcc_clock_setup_in_hse_8mhz_out_72mhz(); // For "blue pill"
+	// rcc_clock_setup_in_hse_8mhz_out_72mhz(); // For "blue pill"
 
-	rcc_periph_clock_enable(RCC_GPIOC);
-	gpio_set_mode(
-		GPIOC,
-		GPIO_MODE_OUTPUT_2_MHZ,
-		GPIO_CNF_OUTPUT_PUSHPULL,
-		GPIO13);
+	// rcc_periph_clock_enable(RCC_GPIOC);
+	// gpio_set_mode( GPIOC, GPIO_MODE_OUTPUT_2_MHZ, GPIO_CNF_OUTPUT_PUSHPULL, GPIO13);
+  rcc_periph_clock_enable(RCC_GPIOE); // JA
+  gpio_mode_setup(GPIOE, GPIO_MODE_OUTPUT, GPIO_PUPD_NONE, GPIO0); // JA
+
 
 	xTaskCreate(task1,"LED",100,NULL,configMAX_PRIORITIES-1,NULL);
 	vTaskStartScheduler();
